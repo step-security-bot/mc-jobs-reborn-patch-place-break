@@ -386,10 +386,10 @@
                         <failOnWarning>true</failOnWarning>
                         <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
                         <ignoredUnusedDeclaredDependencies>
-                            <ignoredUnusedDeclaredDependency>
-                                org.slf4j:slf4j-nop
-                                <!-- Required for deactivating logs during test execution -->
-                            </ignoredUnusedDeclaredDependency>
+                            <!-- Required for deactivating logs during test execution -->
+                            <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-nop</ignoredUnusedDeclaredDependency>
+                            <!-- Required by Pitest for mutation testing -->
+                            <ignoredUnusedDeclaredDependency>org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
                         </ignoredUnusedDeclaredDependencies>
                     </configuration>
                 </plugin>
@@ -446,6 +446,24 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>0.8.11</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>1.15.3</version>
+                    <configuration>
+                        <maxSurviving>0</maxSurviving>
+                        <useSlf4j>true</useSlf4j>
+                        <withHistory>true</withHistory>
+                        <jvmArgs>-Xshare:off</jvmArgs>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.pitest</groupId>
+                            <artifactId>pitest-junit5-plugin</artifactId>
+                            <version>1.2.1</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
 
                 <!-- Release-related plugins -->
@@ -624,6 +642,17 @@
                         <id>report</id>
                         <goals>
                             <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>mutationCoverage</goal>
                         </goals>
                     </execution>
                 </executions>

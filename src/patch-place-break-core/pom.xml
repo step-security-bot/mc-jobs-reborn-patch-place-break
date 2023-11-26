@@ -146,6 +146,11 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
@@ -214,4 +219,27 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <configuration>
+                        <excludedClasses>
+                            <class>fr.djaytan.mc.jrppb.core.inject.*</class>
+                        </excludedClasses>
+                        <avoidCallsTo>
+                            <to>setupSlf4j</to>
+                        </avoidCallsTo>
+                        <excludedMethods>
+                            <method>createHikariConfig</method>
+                            <method>setupSlf4j</method>
+                        </excludedMethods>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
